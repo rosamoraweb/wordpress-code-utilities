@@ -1,0 +1,8 @@
+/* Redirigir a pagina Home si el carrito está vacío */
+add_action( 'template_redirect', 'redirigir_a_portada_si_carrito_vacio' );
+function redirigir_a_portada_si_carrito_vacio() {
+    if ( is_cart() && is_checkout() && 0 == WC()->cart->get_cart_contents_count() && ! is_wc_endpoint_url( 'order-pay' ) && ! is_wc_endpoint_url( 'order-received' ) ) {
+        wp_safe_redirect( home_url() );
+        exit;
+    }
+}
