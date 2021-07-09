@@ -1,0 +1,6 @@
+/* Añade shortcode del carrito a la página de finalizar compra */
+add_action( 'woocommerce_before_checkout_form', 'carrito_y_pago_juntos', 5 );
+function carrito_y_pago_juntos() {
+if ( is_wc_endpoint_url( 'order-received' ) ) return;
+echo do_shortcode('[woocommerce_cart]');
+}
