@@ -1,0 +1,15 @@
+/*Modificar label de nombre a nombre y apellido*/
+
+// Añadimos el filtro al hook
+add_filter( 'woocommerce_checkout_fields' , 'custom_override_checkout_fields2' );
+
+// Modificamos los campos que queramos - $fields es el array que pasamos a través del filtro.
+function custom_override_checkout_fields2( $fields ) {
+     $fields['billing']['billing_first_name'] = array(
+        'label'     => __('Nombre y Apellido', 'woocommerce'),
+    'required'  => true,
+    'clear'     => true
+     );
+ 
+     return $fields;
+}
