@@ -1,0 +1,10 @@
+/* Mostrar "GRATIS" en vez de $0 si el productos es gratis y no tiene costo alguno.*/
+
+add_filter('woocommerce_get_price_html', 'changeFreePriceNotice', 10, 2);
+ 
+function changeFreePriceNotice($price, $product) {
+	if ( $price == wc_price( 0.00 ) )
+		return 'GRATIS';
+	else
+		return $price;
+}
