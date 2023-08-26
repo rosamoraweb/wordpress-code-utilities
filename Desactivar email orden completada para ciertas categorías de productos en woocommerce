@@ -1,0 +1,28 @@
+add_filter( 'woocommerce_email_recipient_customer_processing_order', 'detener_envio_correo_woocommerce_categorias', 10, 2 );
+add_filter( 'woocommerce_email_recipient_customer_completed_order', 'detener_envio_correo_woocommerce_categorias', 10, 2 );
+function detener_envio_correo_woocommerce_categorias( $recipient, $order )
+{
+    if( is_admin() ) return $recipient;
+ 
+    // En este array ponemos la lista de IDs o slugs de las categorías
+    $categorias = array( 1234 );
+ 
+    // Recorremos todo el pedido en búsqueda de productos que estén en las categorías anteriores
+    foreach ( $order->get_items() as $item )
+    {
+        // Instanciamos el objeto de la clase WC_Product
+        $producto = $item->get_product(); 
+        // Obtenemos el id del producto, teniendo en cuenta que pudiera ser una variación
+        $idproducto = $producto->is_type('variation') ? $producto->get_parent_id() : $producto->get_id();
+ 
+        // Comprobamos las categorías del producto
+        if( has_term( $categorias, 'product_cat', $idproducto ) )
+        {
+            return ''; /*   Si el producto está presente en alguna de las categorías iniciales, 
+                            no devolvemos nada en el destinatario. De esa forma WooCommerce no envía el correo.
+                        */
+        }
+             
+    }
+    return $recipient;
+}
